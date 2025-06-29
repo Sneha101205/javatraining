@@ -1,0 +1,34 @@
+class SleepJoinDemo extends Thread {More actions
+    private String threadName;
+
+    public SleepJoinDemo(String name) {
+        this.threadName = name;
+    }
+
+    public void run() {
+        for (int i = 1; i <= 3; i++) {
+            System.out.println(threadName + " - Count: " + i);
+            try {
+                Thread.sleep(500); 
+            } catch (InterruptedException e) {
+                System.out.println(threadName + " was interrupted.");
+            }
+        }
+        System.out.println(threadName + " finished.");
+    }
+
+    public static void main(String[] args) {
+        SleepJoinDemo t1 = new SleepJoinDemo("Thread-1");
+        SleepJoinDemo t2 = new SleepJoinDemo("Thread-2");
+
+        t1.start(); 
+
+        try {
+            t1.join(); 
+        } catch (InterruptedException e) {
+            System.out.println("Main thread interrupted while waiting for t1.");
+        }
+
+        t2.start();
+    }
+}

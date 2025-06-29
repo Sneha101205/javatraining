@@ -1,0 +1,44 @@
+class TicketBookingSystem {
+    private int availableTickets = 5;
+
+    public synchronized void bookTicket(String user, int requestedTickets) {
+        if (requestedTickets <= availableTickets) {
+            System.out.println(user + " booked " + requestedTickets + " ticket(s).");
+            availableTickets -= requestedTickets;
+        } else {
+            System.out.println(user + " tried to book " + requestedTickets + " ticket(s), but only " + availableTickets + " available.");
+        }
+    }
+}
+
+class UserThread extends Thread {
+    private TicketBookingSystem bookingSystem;
+    private String userName;
+    private int ticketsToBook;
+
+    public UserThread(TicketBookingSystem system, String user, int tickets) {
+        this.bookingSystem = system;
+        this.userName = user;
+        this.ticketsToBook = tickets;
+    }
+
+    public void run() {
+        bookingSystem.bookTicket(userName, ticketsToBook);
+    }
+}
+
+public class TicketBookingMain {
+    public static void main(String[] args) {
+        TicketBookingSystem system = new TicketBookingSystem();
+
+        UserThread user1 = new UserThread(system, "Alice", 2);
+        UserThread user2 = new UserThread(system, "Bob", 1);
+        UserThread user3 = new UserThread(system, "Charlie", 2);
+        UserThread user4 = new UserThread(system, "Diana", 2); // Overbooking attempt
+
+        user1.start();
+        user2.start();
+        user3.start();
+        user4.start();
+    }
+}
