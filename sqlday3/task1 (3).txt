@@ -1,0 +1,51 @@
+mysql> create database marks;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use marks;
+Database changed
+mysql> -- Step 1: Create the students table
+mysql> CREATE TABLE students (
+    ->     student_id INT PRIMARY KEY,
+    ->     name VARCHAR(50),
+    ->     marks INT
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> 
+mysql> -- Step 2: Insert some sample data
+mysql> INSERT INTO students (student_id, name, marks) VALUES
+    -> (1, 'Alice', 75),
+    -> (2, 'Bob', 82),
+    -> (3, 'Charlie', 90),
+    -> (4, 'Diana', 60),
+    -> (5, 'Ethan', 85);
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> 
+mysql> -- Step 3: Query students with marks greater than 80
+mysql> SELECT *
+    -> FROM students
+    -> WHERE marks > 80;
++------------+---------+-------+
+| student_id | name    | marks |
++------------+---------+-------+
+|          2 | Bob     |    82 |
+|          3 | Charlie |    90 |
+|          5 | Ethan   |    85 |
++------------+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select * from  students;
++------------+---------+-------+
+| student_id | name    | marks |
++------------+---------+-------+
+|          1 | Alice   |    75 |
+|          2 | Bob     |    82 |
+|          3 | Charlie |    90 |
+|          4 | Diana   |    60 |
+|          5 | Ethan   |    85 |
++------------+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> notee

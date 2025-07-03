@@ -1,0 +1,33 @@
+mysql> create database books;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use books;
+Database changed
+mysql> CREATE TABLE books (
+    ->     book_id INT PRIMARY KEY,
+    ->     title VARCHAR(255),
+    ->     author VARCHAR(100)
+    -> );
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> INSERT INTO books (book_id, title, author) VALUES
+    -> (1, 'The Great Gatsby', 'F. Scott Fitzgerald'),
+    -> (2, 'Great Expectations', 'Charles Dickens'),
+    -> (3, 'Introduction to Algorithms', 'Thomas H. Cormen'),
+    -> (4, 'Gone with the Wind', 'Margaret Mitchell'),
+    -> (5, 'Thinking, Fast and Slow', 'Daniel Kahneman');
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT *
+    -> FROM books
+    -> WHERE title LIKE '%Great%';
++---------+--------------------+---------------------+
+| book_id | title              | author              |
++---------+--------------------+---------------------+
+|       1 | The Great Gatsby   | F. Scott Fitzgerald |
+|       2 | Great Expectations | Charles Dickens     |
++---------+--------------------+---------------------+
+2 rows in set (0.01 sec)
+
+mysql> notee

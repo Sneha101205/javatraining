@@ -1,0 +1,60 @@
+mysql> create database customer;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use customer;
+Database changed
+mysql> CREATE TABLE customers (
+    ->     customer_id INT PRIMARY KEY,
+    ->     name VARCHAR(100),
+    ->     city VARCHAR(100),
+    ->     email VARCHAR(100),
+    ->     age INT
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> INSERT INTO customers (customer_id, name, city, email, age) VALUES
+    -> (1, 'Alice Smith', 'New York', 'alice@example.com', 28),
+    -> (2, 'Bob Johnson', 'Los Angeles', 'bob@example.com', 35),
+    -> (3, 'Charlie Lee', 'Chicago', 'charlie@example.com', 42),
+    -> (4, 'Diana King', 'New York', 'diana@example.com', 22),
+    -> (5, 'Ethan Brown', 'Houston', 'ethan@example.com', 30);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT *
+    -> FROM customers
+    -> WHERE city = 'New York';
++-------------+-------------+----------+-------------------+------+
+| customer_id | name        | city     | email             | age  |
++-------------+-------------+----------+-------------------+------+
+|           1 | Alice Smith | New York | alice@example.com |   28 |
+|           4 | Diana King  | New York | diana@example.com |   22 |
++-------------+-------------+----------+-------------------+------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT *
+    -> FROM customers
+    -> WHERE age > 30;
++-------------+-------------+-------------+---------------------+------+
+| customer_id | name        | city        | email               | age  |
++-------------+-------------+-------------+---------------------+------+
+|           2 | Bob Johnson | Los Angeles | bob@example.com     |   35 |
+|           3 | Charlie Lee | Chicago     | charlie@example.com |   42 |
++-------------+-------------+-------------+---------------------+------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT *
+    -> FROM customers
+    -> WHERE email LIKE '%@example.com';
++-------------+-------------+-------------+---------------------+------+
+| customer_id | name        | city        | email               | age  |
++-------------+-------------+-------------+---------------------+------+
+|           1 | Alice Smith | New York    | alice@example.com   |   28 |
+|           2 | Bob Johnson | Los Angeles | bob@example.com     |   35 |
+|           3 | Charlie Lee | Chicago     | charlie@example.com |   42 |
+|           4 | Diana King  | New York    | diana@example.com   |   22 |
+|           5 | Ethan Brown | Houston     | ethan@example.com   |   30 |
++-------------+-------------+-------------+---------------------+------+
+5 rows in set (0.00 sec)
+
+mysql> notee
