@@ -1,0 +1,142 @@
+mysql> create database sneha;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use sneha;
+Database changed
+mysql> create table student_profile(
+    -> regno int,
+    -> studentname varchar(10),
+    -> date_of_birth date,
+    -> department varchar(15));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> insert into student_profile values(1,'sneha','2005-12-10','cs'),(2,'zara','2004-12-10','cs'),(3,'heera','2006-12-10','cs'),(4,'princy','2003-12-10','cs'),(5,'zayn','2002-12-10','cs');
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from student_profile;
++-------+-------------+---------------+------------+
+| regno | studentname | date_of_birth | department |
++-------+-------------+---------------+------------+
+|     1 | sneha       | 2005-12-10    | cs         |
+|     2 | zara        | 2004-12-10    | cs         |
+|     3 | heera       | 2006-12-10    | cs         |
+|     4 | princy      | 2003-12-10    | cs         |
+|     5 | zayn        | 2002-12-10    | cs         |
++-------+-------------+---------------+------------+
+5 rows in set (0.00 sec)
+
+mysql> create table marks(
+    -> regno int,
+    -> mark1 int,
+    -> mark2 int,
+    -> mark3 int,
+    -> mark4 int);
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> alter table marks drop column mark4;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from marks;
+Empty set (0.00 sec)
+
+mysql> insert into marks values(1,23,45,43),(2,31,43,65),(3,54,23,21),(4,53,21,29),(5,49,18,45);
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from marks;
++-------+-------+-------+-------+
+| regno | mark1 | mark2 | mark3 |
++-------+-------+-------+-------+
+|     1 |    23 |    45 |    43 |
+|     2 |    31 |    43 |    65 |
+|     3 |    54 |    23 |    21 |
+|     4 |    53 |    21 |    29 |
+|     5 |    49 |    18 |    45 |
++-------+-------+-------+-------+
+5 rows in set (0.00 sec)
+
+mysql> alter table marks add column total int;
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from marks;
++-------+-------+-------+-------+-------+
+| regno | mark1 | mark2 | mark3 | total |
++-------+-------+-------+-------+-------+
+|     1 |    23 |    45 |    43 |  NULL |
+|     2 |    31 |    43 |    65 |  NULL |
+|     3 |    54 |    23 |    21 |  NULL |
+|     4 |    53 |    21 |    29 |  NULL |
+|     5 |    49 |    18 |    45 |  NULL |
++-------+-------+-------+-------+-------+
+5 rows in set (0.00 sec)
+
+mysql> update marks set total=mark1+mark2+mark3;
+Query OK, 5 rows affected (0.01 sec)
+Rows matched: 5  Changed: 5  Warnings: 0
+
+mysql> select * from marks;
++-------+-------+-------+-------+-------+
+| regno | mark1 | mark2 | mark3 | total |
++-------+-------+-------+-------+-------+
+|     1 |    23 |    45 |    43 |   111 |
+|     2 |    31 |    43 |    65 |   139 |
+|     3 |    54 |    23 |    21 |    98 |
+|     4 |    53 |    21 |    29 |   103 |
+|     5 |    49 |    18 |    45 |   112 |
++-------+-------+-------+-------+-------+
+5 rows in set (0.00 sec)
+
+mysql> alter table marks add column average int;
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from marks;
++-------+-------+-------+-------+-------+---------+
+| regno | mark1 | mark2 | mark3 | total | average |
++-------+-------+-------+-------+-------+---------+
+|     1 |    23 |    45 |    43 |   111 |    NULL |
+|     2 |    31 |    43 |    65 |   139 |    NULL |
+|     3 |    54 |    23 |    21 |    98 |    NULL |
+|     4 |    53 |    21 |    29 |   103 |    NULL |
+|     5 |    49 |    18 |    45 |   112 |    NULL |
++-------+-------+-------+-------+-------+---------+
+5 rows in set (0.00 sec)
+
+mysql> desc marks;
++---------+------+------+-----+---------+-------+
+| Field   | Type | Null | Key | Default | Extra |
++---------+------+------+-----+---------+-------+
+| regno   | int  | YES  |     | NULL    |       |
+| mark1   | int  | YES  |     | NULL    |       |
+| mark2   | int  | YES  |     | NULL    |       |
+| mark3   | int  | YES  |     | NULL    |       |
+| total   | int  | YES  |     | NULL    |       |
+| average | int  | YES  |     | NULL    |       |
++---------+------+------+-----+---------+-------+
+6 rows in set (0.03 sec)
+
+mysql> Terminal close -- exit!
+mysql> use sneha;
+Database changed
+mysql> select * from marks;
++-------+-------+-------+-------+-------+---------+
+| regno | mark1 | mark2 | mark3 | total | average |
++-------+-------+-------+-------+-------+---------+
+|     1 |    23 |    45 |    43 |   111 |    NULL |
+|     2 |    31 |    43 |    65 |   139 |    NULL |
+|     3 |    54 |    23 |    21 |    98 |    NULL |
+|     4 |    53 |    21 |    29 |   103 |    NULL |
+|     5 |    49 |    18 |    45 |   112 |    NULL |
++-------+-------+-------+-------+-------+---------+
+5 rows in set (0.00 sec)
+
+mysql> truncate table marks;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> select * from marks;
+Empty set (0.00 sec)
+
+mysql> 

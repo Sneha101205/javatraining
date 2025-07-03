@@ -1,0 +1,40 @@
+mysql> use sneha;
+Database changed
+mysql> create table stud_details(
+    -> roll no,
+    -> Terminal close -- exit!
+mysql> use sneha;
+Database changed
+mysql> create table stud_details(
+    -> rollno int,
+    -> name varchar(10),
+    -> subject varchar(10),
+    -> dept varchar(10));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> select *from stud_details;
+Empty set (0.00 sec)
+
+
+mysql> insert into stud_details values(1,'zayn','css','cs');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into stud_details values(2,'zara','javascript','BCA');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into stud_details values(3,'heera','python','IT');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into stud_details values(5,'mary','html','CT');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from stud_details;
++--------+--------+----------+------+
+| rollno | name   | subject  | dept |
++--------+--------+--------- +------+
+|      1 | zayn   | css      | cs   |
+|      2 | zara   |javascript| BCA  |
+|      3 | heera  | python   | IT   |
+|      5 | mary   | html     | CT   |
++--------+--------+----------+------+
+4 rows in set (0.00 sec)
