@@ -1,0 +1,85 @@
+mysql> create database query;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use query;
+Database changed
+mysql> SELECT s.student_id, s.name, SUM(m.marks) AS total_marks
+    -> FROM students s
+    -> JOIN marks m ON s.student_id = m.student_id
+    -> GROUP BY s.student_id, s.name
+    -> HAVING SUM(m.marks) = (
+    ->     SELECT MAX(total)
+    ->     FROM (
+    ->         SELECT SUM(marks) AS total
+    ->         FROM marks
+    ->         GROUP BY student_id
+    ->     ) AS totals
+    -> );
+ERROR 1146 (42S02): Table 'query.students' doesn't exist
+mysql> SELECT s.student_id, s.name, SUM(m.marks) AS total_marks
+    -> FROM students s
+    -> JOIN marks m ON s.student_id = m.student_id
+    -> GROUP BY s.student_id, s.name
+    -> HAVING SUM(m.marks) = (
+    ->     SELECT MAX(total)
+    ->     FROM (
+    ->         SELECT SUM(marks) AS total
+    ->         FROM marks
+    ->         GROUP BY student_id
+    ->     ) AS totals
+    -> );
+ERROR 1146 (42S02): Table 'query.students' doesn't exist
+mysql> CREATE TABLE students (
+    ->     student_id INT PRIMARY KEY,
+    ->     name VARCHAR(100)
+    -> );
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> 
+mysql> CREATE TABLE marks (
+    ->     mark_id INT PRIMARY KEY,
+    ->     student_id INT,
+    ->     subject VARCHAR(50),
+    ->     marks INT,
+    ->     FOREIGN KEY (student_id) REFERENCES students(student_id)
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> INSERT INTO students (student_id, name) VALUES
+    -> (1, 'Alice'),
+    -> (2, 'Bob'),
+    -> (3, 'Charlie');
+Query OK, 3 rows affected (0.00 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> 
+mysql> INSERT INTO marks (mark_id, student_id, subject, marks) VALUES
+    -> (1, 1, 'Math', 85),
+    -> (2, 1, 'Science', 90),
+    -> (3, 2, 'Math', 78),
+    -> (4, 2, 'Science', 82),
+    -> (5, 3, 'Math', 88),
+    -> (6, 3, 'Science', 92);
+Query OK, 6 rows affected (0.00 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> SELECT s.student_id, s.name, SUM(m.marks) AS total_marks
+    -> FROM students s
+    -> JOIN marks m ON s.student_id = m.student_id
+    -> GROUP BY s.student_id, s.name
+    -> HAVING SUM(m.marks) = (
+    ->     SELECT MAX(total)
+    ->     FROM (
+    ->         SELECT SUM(marks) AS total
+    ->         FROM marks
+    ->         GROUP BY student_id
+    ->     ) AS totals
+    -> );
++------------+---------+-------------+
+| student_id | name    | total_marks |
++------------+---------+-------------+
+|          3 | Charlie |         180 |
++------------+---------+-------------+
+1 row in set (0.00 sec)
+
+mysql> notee
