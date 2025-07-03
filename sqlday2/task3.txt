@@ -1,0 +1,175 @@
+CREATE TABLE Patients (More actions
+    ->     PatientID INT PRIMARY KEY,
+    ->     Name VARCHAR(100) NOT NULL,
+    ->     DOB DATE,
+    ->     Gender CHAR(1) CHECK (Gender IN ('M', 'F'))
+    -> );
+Query OK, 0 rows affected (0.09 sec)
+
+
+mysql> CREATE TABLE Departments (
+    ->     DepartmentID INT PRIMARY KEY,
+    ->     DeptName VARCHAR(100) NOT NULL UNIQUE
+    -> );
+Query OK, 0 rows affected (0.08 sec)
+
+
+mysql> CREATE TABLE Doctors (
+    ->     DoctorID INT PRIMARY KEY,
+    ->     Name VARCHAR(100) NOT NULL,
+    ->     Specialization VARCHAR(100),
+    ->     DepartmentID INT,
+    ->     FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID)
+    -> );
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> CREATE TABLE Appointments (
+    ->     AppointmentID INT PRIMARY KEY,
+    ->     PatientID INT,
+    ->     DoctorID INT,
+    ->     AppointmentDate DATE,
+    ->     Reason VARCHAR(255),
+    ->     FOREIGN KEY (PatientID) REFERENCES Patients(PatientID),
+    ->     FOREIGN KEY (DoctorID) REFERENCES Doctors(DoctorID)
+    -> );
+Query OK, 0 rows affected (0.10 sec)
+
+
+mysql> CREATE TABLE Treatments (
+    ->     TreatmentID INT PRIMARY KEY,
+    ->     AppointmentID INT,
+    ->     Description TEXT,
+    ->     MedicinePrescribed TEXT,
+    ->     FOREIGN KEY (AppointmentID) REFERENCES Appointments(AppointmentID)
+    -> );
+Query OK, 0 rows affected (0.21 sec)
+
+
+mysql> CREATE TABLE Rooms (
+    ->     RoomID INT PRIMARY KEY,
+    ->     RoomType VARCHAR(50), -- e.g., ICU, General, Private
+    ->     Status VARCHAR(20) CHECK (Status IN ('Available', 'Occupied'))
+    -> );
+Query OK, 0 rows affected (0.08 sec)
+
+
+mysql> CREATE TABLE Admissions (
+    ->     AdmissionID INT PRIMARY KEY,
+    ->     PatientID INT,
+    ->     RoomID INT,
+    ->     AdmissionDate DATE,
+    ->     DischargeDate DATE,
+    ->     FOREIGN KEY (PatientID) REFERENCES Patients(PatientID),
+    ->     FOREIGN KEY (RoomID) REFERENCES Rooms(RoomID)
+    -> );
+Query OK, 0 rows affected (0.15 sec)
+
+mysql> select * from Patients;
+Empty set (0.01 sec)
+
+mysql> INSERT INTO Patients (PatientID, Name, DOB, Gender) VALUES
+    -> (1, 'Ananya Sharma', '1992-04-15', 'F'),
+    -> (2, 'Rohan Das', '1988-09-22', 'M'),
+    -> (3, 'Sneha Iyer', '2000-12-05', 'F');
+Query OK, 3 rows affected (0.05 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Departments (DepartmentID, DeptName) VALUES
+    -> (1, 'Cardiology'),
+    -> (2, 'Neurology'),
+    -> (3, 'Orthopedics');
+Query OK, 3 rows affected (0.04 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Doctors (DoctorID, Name, Specialization, DepartmentID) VALUES
+    -> (101, 'Dr. Meera Singh', 'Cardiologist', 1),
+    -> (102, 'Dr. Arvind Nair', 'Neurologist', 2),
+    -> (103, 'Dr. Priya Menon', 'Orthopedic Surgeon', 3);
+Query OK, 3 rows affected (0.07 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Appointments (AppointmentID, PatientID, DoctorID, AppointmentDate, Reason) VALUES
+    -> (1001, 1, 101, '2025-06-10', 'Chest pain'),
+    -> (1002, 2, 102, '2025-06-11', 'Migraine'),
+    -> (1003, 3, 103, '2025-06-12', 'Knee injury');
+Query OK, 3 rows affected (0.05 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Treatments (TreatmentID, AppointmentID, Description, MedicinePrescribed) VALUES
+    -> (201, 1001, 'ECG done, advised rest', 'Aspirin'),
+    -> (202, 1002, 'MRI done, mild stress headache', 'Paracetamol'),
+    -> (203, 1003, 'X-ray shows ligament strain', 'Ibuprofen');
+Query OK, 3 rows affected (0.05 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Rooms (RoomID, RoomType, Status) VALUES
+    -> (301, 'ICU', 'Occupied'),
+    -> (302, 'General', 'Available'),
+    -> (303, 'Private', 'Occupied');
+Query OK, 3 rows affected (0.05 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Admissions (AdmissionID, PatientID, RoomID, AdmissionDate, DischargeDate) VALUES
+    -> (401, 1, 301, '2025-06-10', NULL),
+    -> (402, 3, 303, '2025-06-12', NULL);
+Query OK, 2 rows affected (0.05 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from Patients;
++-----------+---------------+------------+--------+
+| PatientID | Name          | DOB        | Gender |
++-----------+---------------+------------+--------+
+|         1 | Ananya Sharma | 1992-04-15 | F      |
+|         2 | Rohan Das     | 1988-09-22 | M      |
+|         3 | Sneha Iyer    | 2000-12-05 | F      |
++-----------+---------------+------------+--------+
+3 rows in set (0.00 sec)
+
+mysql> select * from  Doctors;
++----------+-----------------+--------------------+--------------+
+| DoctorID | Name            | Specialization     | DepartmentID |
++----------+-----------------+--------------------+--------------+
+|      101 | Dr. Meera Singh | Cardiologist       |            1 |
+|      102 | Dr. Arvind Nair | Neurologist        |            2 |
+|      103 | Dr. Priya Menon | Orthopedic Surgeon |            3 |
++----------+-----------------+--------------------+--------------+
+3 rows i
+
+mysql> select * from   Departments;
++--------------+-------------+
+| DepartmentID | DeptName    |
++--------------+-------------+
+|            1 | Cardiology  |
+|            2 | Neurology   |
+|            3 | Orthopedics |
++--------------+-------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from   Treatments;
++-------------+---------------+--------------------------------+--------------------+
+| TreatmentID | AppointmentID | Description                    | MedicinePrescribed |
++-------------+---------------+--------------------------------+--------------------+
+|         201 |          1001 | ECG done, advised rest         | Aspirin            |
+|         202 |          1002 | MRI done, mild stress headache | Paracetamol        |
+|         203 |          1003 | X-ray shows ligament strain    | Ibuprofen          |
++-------------+---------------+--------------------------------+--------------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from  Rooms;
++--------+----------+-----------+
+| RoomID | RoomType | Status    |
++--------+----------+-----------+
+|    301 | ICU      | Occupied  |
+|    302 | General  | Available |
+|    303 | Private  | Occupied  |
++--------+----------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> select * from   Admissions;
++-------------+-----------+--------+---------------+---------------+
+| AdmissionID | PatientID | RoomID | AdmissionDate | DischargeDate |
++-------------+-----------+--------+---------------+---------------+
+|         401 |         1 |    301 | 2025-06-10    | NULL          |
+|         402 |         3 |    303 | 2025-06-12    | NULL          |
++-------------+-----------+--------+---------------+---------------+
+2 rows in set (0.00 sec)

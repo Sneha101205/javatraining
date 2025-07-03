@@ -1,0 +1,157 @@
+ CREATE TABLE Departments (
+    ->     DepartmentID INT PRIMARY KEY,
+    ->     DepartmentName VARCHAR(100) NOT NULL UNIQUE
+    -> );
+Query OK, 0 rows affected (0.12 sec)
+
+mysql>
+mysql> CREATE TABLE Students (
+    ->     StudentID INT PRIMARY KEY,
+    ->     Name VARCHAR(100) NOT NULL,
+    ->     DOB DATE,
+    ->     Gender CHAR(1) CHECK (Gender IN ('M', 'F'))
+    -> );
+Query OK, 0 rows affected (0.07 sec)
+
+mysql>
+mysql> CREATE TABLE Courses (
+    ->     CourseID INT PRIMARY KEY,
+    ->     CourseName VARCHAR(100) NOT NULL,
+    ->     Credits INT,
+    ->     DepartmentID INT,
+    ->     FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID)
+    -> );
+Query OK, 0 rows affected (0.13 sec)
+
+
+mysql> CREATE TABLE Instructors (
+    ->     InstructorID INT PRIMARY KEY,
+    ->     Name VARCHAR(100) NOT NULL,
+    ->     DepartmentID INT,
+    ->     FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID)
+    -> );
+Query OK, 0 rows affected (0.13 sec)
+
+
+mysql> CREATE TABLE Enrollments (
+    ->     StudentID INT,
+    ->     CourseID INT,
+    ->     Semester VARCHAR(20),
+    ->     Grade CHAR(2),
+    ->     PRIMARY KEY (StudentID, CourseID, Semester),
+    ->     FOREIGN KEY (StudentID) REFERENCES Students(StudentID),
+    ->     FOREIGN KEY (CourseID) REFERENCES Courses(CourseID)
+    -> );
+Query OK, 0 rows affected (0.11 sec)
+
+mysql> CREATE TABLE Teaches (
+    ->     InstructorID INT,
+    ->     CourseID INT,
+    ->     Semester VARCHAR(20),
+    ->     PRIMARY KEY (InstructorID, CourseID, Semester),
+    ->     FOREIGN KEY (InstructorID) REFERENCES Instructors(InstructorID),
+    ->     FOREIGN KEY (CourseID) REFERENCES Courses(CourseID)
+    -> );
+Query OK, 0 rows affected (0.13 sec)
+
+mysql> INSERT INTO Departments (DepartmentID, DepartmentName) VALUES
+    -> (1, 'Computer Science'),
+    -> (2, 'Electronics'),
+    -> (3, 'Mechanical Engineering');
+Query OK, 3 rows affected (0.06 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Students (StudentID, Name, DOB, Gender) VALUES
+    -> (101, 'Sneha', '2002-05-10', 'F'),
+    -> (102, 'Divya', '2003-08-14', 'F'),
+    -> (103, 'Ravina', '2002-12-01', 'F');
+Query OK, 3 rows affected (0.06 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Courses (CourseID, CourseName, Credits, DepartmentID) VALUES
+    -> (201, 'Data Structures', 4, 1),
+    -> (202, 'Digital Electronics', 3, 2),
+    -> (203, 'Thermodynamics', 4, 3);
+Query OK, 3 rows affected (0.03 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Instructors (InstructorID, Name, DepartmentID) VALUES
+    -> (301, 'Dr. Anjana', 1),
+    -> (302, 'Dr. Navaneesh', 2),
+    -> (303, 'Dr. Sanjana', 3);
+Query OK, 3 rows affected (0.05 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Enrollments (StudentID, CourseID, Semester, Grade) VALUES
+    -> (101, 201, 'Sem1', 'A'),
+    -> (102, 202, 'Sem1', 'B'),
+    -> (103, 203, 'Sem1', 'A');
+Query OK, 3 rows affected (0.04 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Teaches (InstructorID, CourseID, Semester) VALUES
+    -> (301, 201, 'Sem1'),
+    -> (302, 202, 'Sem1'),
+    -> (303, 203, 'Sem1');
+Query OK, 3 rows affected (0.07 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from Teaches;
++--------------+----------+----------+
+| InstructorID | CourseID | Semester |
++--------------+----------+----------+
+|          301 |      201 | Sem1     |
+|          302 |      202 | Sem1     |
+|          303 |      203 | Sem1     |
++--------------+----------+----------+
+3 rows in set (0.00 sec)
+
+mysql> select * from  Enrollments;
++-----------+----------+----------+-------+
+| StudentID | CourseID | Semester | Grade |
++-----------+----------+----------+-------+
+|       101 |      201 | Sem1     | A     |
+|       102 |      202 | Sem1     | B     |
+|       103 |      203 | Sem1     | A     |
++-----------+----------+----------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select * from   Instructors;
++--------------+------------------+--------------+
+| InstructorID | Name             | DepartmentID |
++--------------+------------------+--------------+
+|          301 | Dr. Anjana       |            1 |
+|          302 | Dr. Navaneesh    |            2 |
+|          303 | Dr. Sanjana      |            3 |
++--------------+------------------+--------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from  Courses;
++----------+---------------------+---------+--------------+
+| CourseID | CourseName          | Credits | DepartmentID |
++----------+---------------------+---------+--------------+
+|      201 | Data Structures     |       4 |            1 |
+|      202 | Digital Electronics |       3 |            2 |
+|      203 | Thermodynamics      |       4 |            3 |
++----------+---------------------+---------+--------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from  Students;
++-----------+-------------+------------+--------+
+| StudentID | Name        | DOB        | Gender |
++-----------+-------------+------------+--------+
+|       101 | Sneha       | 2002-05-10 | F     |
+|       102 | Divya       | 2003-08-14 | F      |
+|       103 | Ravina      | 2002-12-01 | M      |
++-----------+-------------+------------+--------+
+3 rows in set (0.00 sec)
+
+mysql> select * from  Departments;
++--------------+------------------------+
+| DepartmentID | DepartmentName         |
++--------------+------------------------+
+|            1 | Computer Science       |
+|            2 | Electronics            |
+|            3 | Mechanical Engineering |
++--------------+------------------------+
+3 rows in set (0.00 sec)

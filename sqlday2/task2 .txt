@@ -1,0 +1,87 @@
+CREATE TABLE AuthorsInfo (
+    ->     AuthorID INT AUTO_INCREMENT PRIMARY KEY,
+    ->     FullName VARCHAR(100) UNIQUE NOT NULL,
+    ->     Biography TEXT
+    -> );
+Query OK, 0 rows affected (0.13 sec)
+mysql> CREATE TABLE PublishingHouses (
+    ->     PubHouseID INT AUTO_INCREMENT PRIMARY KEY,
+    ->     HouseName VARCHAR(100) UNIQUE NOT NULL,
+    ->     Location VARCHAR(255)
+    -> );
+Query OK, 0 rows affected (0.11 sec)
+
+mysql> CREATE TABLE StoreBooks (
+    ->     StoreBookID INT AUTO_INCREMENT PRIMARY KEY,
+    ->     BookTitle VARCHAR(200) NOT NULL,
+    ->     BookPrice DECIMAL(10, 2),
+    ->     BookISBN VARCHAR(20) UNIQUE,
+    ->     Category VARCHAR(50),
+    ->     InStock INT,
+    ->     PubHouseID INT,
+    ->     FOREIGN KEY (PubHouseID) REFERENCES PublishingHouses(PubHouseID)
+    -> );
+Query OK, 0 rows affected (0.16 sec)
+mysql> CREATE TABLE StoreBook_Author (
+    ->     StoreBookID INT,
+    ->     AuthorID INT,
+    ->     PRIMARY KEY (StoreBookID, AuthorID),
+    ->     FOREIGN KEY (StoreBookID) REFERENCES StoreBooks(StoreBookID),
+    ->     FOREIGN KEY (AuthorID) REFERENCES AuthorsInfo(AuthorID)
+    -> );
+Query OK, 0 rows affected (0.23 sec)
+mysql> INSERT INTO AuthorsInfo (FullName, Biography) VALUES
+    -> ('George Orwell', 'British writer known for dystopian novels.'),
+    -> ('Harper Lee', 'Author of "To Kill a Mockingbird".');
+Query OK, 2 rows affected (0.02 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+mysql> INSERT INTO PublishingHouses (HouseName, Location) VALUES
+    -> ('Penguin Books', '375 Hudson Street, New York, NY'),
+    -> ('HarperCollins', '195 Broadway, New York, NY');
+Query OK, 2 rows affected (0.03 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+mysql> INSERT INTO StoreBooks (BookTitle, BookPrice, BookISBN, Category, InStock, PubHouseID) VALUES
+    -> ('1984', 15.99, '9780451524935', 'Dystopian', 30, 1),
+    -> ('To Kill a Mockingbird', 12.50, '9780061120084', 'Fiction', 25, 2);
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+mysql> INSERT INTO StoreBook_Author (StoreBookID, AuthorID) VALUES
+    -> (1, 1),
+    -> (2, 2);
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+mysql> select * from AuthorsInfo;
++----------+---------------+--------------------------------------------+
+| AuthorID | FullName      | Biography                                  |
++----------+---------------+--------------------------------------------+
+|        1 | George Orwell | British writer known for dystopian novels. |
+|        2 | Harper Lee    | Author of "To Kill a Mockingbird".         |
++----------+---------------+--------------------------------------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from PublishingHouses;
++------------+---------------+---------------------------------+
+| PubHouseID | HouseName     | Location                        |
++------------+---------------+---------------------------------+
+|          1 | Penguin Books | 375 Hudson Street, New York, NY |
+|          2 | HarperCollins | 195 Broadway, New York, NY      |
++------------+---------------+---------------------------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from  StoreBooks;
++-------------+-----------------------+-----------+---------------+-----------+---------+------------+
+| StoreBookID | BookTitle             | BookPrice | BookISBN      | Category  | InStock | PubHouseID |
++-------------+-----------------------+-----------+---------------+-----------+---------+------------+
+|           1 | 1984                  |     15.99 | 9780451524935 | Dystopian |      30 |          1 |
+|           2 | To Kill a Mockingbird |     12.50 | 9780061120084 | Fiction   |      25 |          2 |
++-------------+-----------------------+-----------+---------------+-----------+---------+------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from  StoreBook_Author;
++-------------+----------+
+| StoreBookID | AuthorID |
++-------------+----------+
+|           1 |        1 |
+|           2 |        2 |
++-------------+----------+
+2 rows in set (0.00 sec)
